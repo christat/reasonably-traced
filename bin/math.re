@@ -1,5 +1,7 @@
 type vec3('t) = ('t, 't, 't);
 
+let floatOfIntDiv = (dividend: int, divisor: int) => float_of_int(dividend) /. float_of_int(divisor);
+
 module Vec3f = {
   type t = vec3(float);
 
@@ -42,9 +44,14 @@ module Vec3f = {
     (ax /. bx, ay /. by, az /. bz);
   };
 
-  let addConst = (~c: float, v: t) => {
+  let addConst = (c: float, v: t) => {
     let (x, y, z) = v;
     (x +. c, y +. c, z +. c);
+  };
+
+  let mulConst = (c: float, v: t) => {
+    let (x, y, z) = v;
+    (x *. c, y *. c, z *. c);
   };
 
   let lenSquared = (v: t) => {

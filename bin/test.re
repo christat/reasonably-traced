@@ -15,9 +15,12 @@ module Camera = {
 };
 
 let computeColor = (ray: Ray.t) => {
-  let unitDirection = Vec3f.normalized(ray.direction);
-  let t: float = 0.5 *. (Vec3f.y(unitDirection) +. 1.0);
-  Vec3f.addConst(~c=1.0 -. t, (1.0, 1.0, 1.0)) |> Vec3f.add(Vec3f.addConst(~c=t, (0.5, 0.7, 1.0)));
+  let (_, y, _) = Vec3f.normalized(ray.direction);
+  let t: float = 0.5 *. (y +. 1.0);
+  let (r, g, b) =
+    Vec3f.mulConst((1.0 -. t), (1.0, 1.0, 1.0))
+    |> Vec3f.add(Vec3f.mulConst(t, (0.5, 0.7, 1.0)));
+  (int_of_float(r *. 255.99), int_of_float(g *. 255.99), int_of_float(b *. 255.99));
 };
 
 let printBuffer = (~width: int, ~height: int, buffer: list(Rgb.t)) => {
@@ -26,11 +29,19 @@ let printBuffer = (~width: int, ~height: int, buffer: list(Rgb.t)) => {
 };
 
 let rec fillBuffer = (~x: int, ~y: int, ~width: int, ~height: int, ~samples: int, buffer: list(Rgb.t)) => {
-  let rgb = (255 * x / width, 255 * y / height, 52);
-  let nextBuffer = [rgb, ...buffer];
-  switch((x, y)) {
-  | (x, _) when x + 1 < width => fillBuffer(~x=x + 1, ~y=y, ~width=width, ~height=height, ~samples=samples, nextBuffer)
-  | (_, y) when y - 1 >= 0 => fillBuffer(~x=0, ~y=y - 1, ~width=width, ~height=height, ~samples=samples, nextBuffer)  
+  let (u, v): (float, float) = (floatOfIntDiv(x, width), floatOfIntDiv(y, height));
+  let ray: Ray.t = {
+    origin: Camera.origin,
+    direction: 
+      Vec3f.mulConst(u, Camera.horizontal)
+      |> Vec3f.add(Vec3f.mulConst(v, Camera.vertical))
+      |> Vec3f.add(Camera.bottomLeft)
+  };
+
+  let updatedBuffer = [computeColor(ray), ...buffer];
+  switch (x, y) {
+  | (x, _) when x + 1 < width => fillBuffer(~x=x + 1, ~y=y, ~width=width, ~height=height, ~samples=samples, updatedBuffer)
+  | (_, y) when y - 1 >= 0 => fillBuffer(~x=0, ~y=y - 1, ~width=width, ~height=height, ~samples=samples, updatedBuffer)  
   | _ => printBuffer(~width=width, ~height=height, buffer)
   };
 };

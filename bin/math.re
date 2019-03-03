@@ -70,7 +70,7 @@ module Vec3f = {
   let dot = (a: t, b: t) => {
     let (ax, ay, az) = a;
     let (bx, by, bz) = b;
-    (ax*.bx, ay*.by, az*.bz);
+    ax*.bx +. ay*.by +. az*.bz;
   };
 
   let cross = (a: t, b: t) => {

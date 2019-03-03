@@ -54,6 +54,11 @@ module Vec3f = {
     (x *. c, y *. c, z *. c);
   };
 
+  let divConst = (c: float, v: t) => {
+    let (x, y, z) = v;
+    (x /. c, y /. c, z /. c);
+  }
+
   let lenSquared = (v: t) => {
     let (x, y, z) = v;
     x*.x +. y*.y +. z*.z;
@@ -81,6 +86,11 @@ module Vec3f = {
     let z = ax*.by -. ay*.bx;
     (x, y, z);
   };
+
+  let toInt = (vec: t) => {
+    let (x, y, z) = vec;
+    (int_of_float(x), int_of_float(y), int_of_float(z));
+  }
 }
 
 module Point3f = Vec3f;

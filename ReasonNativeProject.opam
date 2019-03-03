@@ -13,10 +13,10 @@ bug-reports: "https://github.com/reasonml/ReasonNativeProject/issues"
 dev-repo: "git://github.com/reasonml/ReasonNativeProject.git"
 tags: [ "reason" "example" ]
 build: [
-  ["jbuilder" "build" "-p" name "-j" jobs]
+  ["dune" "build" "-p" name "-j" jobs]
 ]
 depends: [
-  "jbuilder" {build}
+  "dune" {build & >= "1.0"}
   "reason"  {= "3.0.4"}
   "re"
 ]

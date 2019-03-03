@@ -1,11 +1,11 @@
 build:
-	jbuilder build
+	dune build
 
 run: build
 	./_build/install/default/bin/reason-native-bin
 
 test:
-	jbuilder runtest
+	dune runtest
 
 # some boilerplate to publish a new version to GitHub
 release:

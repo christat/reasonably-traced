@@ -94,7 +94,12 @@ module Vec3f = {
   let toInt = (vec: t): Vec3i.t  => {
     let (x, y, z) = vec;
     (truncate(x), truncate(y), truncate(z));
-  }
+  };
+
+  let sqrt = (vec: t): t => {
+    let (x, y, z) = vec;
+    (sqrt(x), sqrt(y), sqrt(z));
+  };
 }
 
 module Point3f = Vec3f;

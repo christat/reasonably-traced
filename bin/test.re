@@ -1,7 +1,7 @@
 let defaultParams: Camera.traceParams = {
   width: 200,
   height: 100,
-  samples: 10
+  samples: 100
 };
 
 let () = {
@@ -16,7 +16,7 @@ let () = {
     | _ => defaultParams
     };
  
-  let { camera, scene }: Examples.t = Examples.chapter5(traceParams);
+  let { camera, scene }: Examples.t = Examples.chapter8(traceParams);
 
   Tracer.trace(~x=0, ~y=traceParams.height-1, ~camera, ~scene, []) |> ignore;
 };

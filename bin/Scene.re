@@ -5,7 +5,7 @@ type entityTypes = traceable(Sphere.t, unit);
 
 type t = list(entityTypes);
 
-let rec intersection = (~ray: Ray.t, ~min_t: float=0.001, ~max_t: float=infinity, ~record: option(Record.t)=None, items: t): option(Record.t) =>
+let rec intersection = (~ray: Ray.t, ~min_t: float=0.001, ~max_t: float=infinity, ~record: option(Material.record)=None, items: t): option(Material.record) =>
   switch items {
   | [] => record
   | [item, ...restItems] =>
@@ -19,13 +19,16 @@ let rec intersection = (~ray: Ray.t, ~min_t: float=0.001, ~max_t: float=infinity
       };
   };
 
-let rec computeColor = (~ray: Ray.t, scene: t): Vec3f.t => {
+let rec computeScatteredColor = (~ray: Ray.t, ~depth: int=0, ~scene: t, record: Material.record): Vec3f.t =>
+switch (Material.scatter(~ray, ~record, record.material)) {
+| Some(s) => Vec3f.mul(s.attenuation, computeColor(~ray=s.scattered, ~depth=depth+1, scene))
+| None => (0.0, 0.0, 0.0)
+}
+and computeColor = (~ray: Ray.t, ~depth: int=0, scene: t): Vec3f.t => {
   switch (intersection(~ray, scene)) {
-  | Some(record) => {
-      let { point, normal, _ }: Record.t = record;
-      let target = Vec3f.add(point, normal) |> Vec3f.add(Utils.randomPointInUnitSphere());
-      let bounce: Ray.t = { origin: point, direction: Vec3f.sub(target, point) };
-      Vec3f.mulConst(0.5, computeColor(~ray=bounce, scene));
+  | Some(record) => switch (depth >= 50) {
+    | true => (0.0, 0.0, 0.0)
+    | false => computeScatteredColor(~ray, ~depth, ~scene, record)
     };
   | None => {
       let (_, y, _) = Vec3f.normalized(ray.direction);

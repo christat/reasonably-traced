@@ -2,7 +2,7 @@ build:
 	dune build
 
 run: build
-	./_build/install/default/bin/reason-native-bin
+	./_build/install/default/bin/reasonably-traced
 
 test:
 	dune runtest
@@ -12,10 +12,10 @@ release:
 	git add package.json opam
 	git commit -m "Version $(version)"
 	git tag -a $(version) -m "Version $(version)."
-	git push "git@github.com:reasonml/ReasonNativeProject.git"
-	git push "git@github.com:reasonml/ReasonNativeProject.git" tag $(version)
+	git push "git@github.com:christat/ReasonablyTraced.git"
+	git push "git@github.com:christat/ReasonablyTraced.git" tag $(version)
 
 clean:
 	rm -rf _build *.install
 
-.PHONY: build release test
+.PHONY: build release main

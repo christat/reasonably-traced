@@ -1,6 +1,5 @@
 (executable
- (name test)
+ (name main)
  ; This will be installable as a global binary
- (public_name reason-native-bin)
- ; and it depends on 2 local libraries
- (libraries lib internal))
+ (public_name reasonably-traced)
+)

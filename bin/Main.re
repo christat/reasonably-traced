@@ -16,7 +16,7 @@ let () = {
     | _ => defaultParams
     };
  
-  let { camera, scene }: Examples.t = Examples.chapter8(traceParams);
+  let { camera, scene }: Examples.t = Examples.chapter9(traceParams);
 
   Tracer.trace(~x=0, ~y=traceParams.height-1, ~camera, ~scene, []) |> ignore;
 };

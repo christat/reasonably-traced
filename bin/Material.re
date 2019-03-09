@@ -16,7 +16,7 @@ type metal = {
 };
 
 type dielectric = {
-  albedo: Vec3f.t
+  refractivity: float
 };
 
 type t =
@@ -58,14 +58,38 @@ let scatterMetal = (~ray: Ray.t, ~record: record, metal: metal): option(scatter)
   };
 };
 
-let scatterDielectric = (): option(scatter) => {
-  None
+let scatterDielectric = (~ray: Ray.t, ~record: record, dielectric: dielectric): option(scatter) => {
+  let { direction, _ }: Ray.t = ray;
+  let { normal, point, _ }: record = record;
+  let { refractivity }: dielectric = dielectric;
+
+  let rayObjectDot = Vec3f.dot(direction, normal);
+  let (outwardNormal, niOverNt, cosine) = switch (rayObjectDot > 0.0) {
+    | true => {
+        let cosine = refractivity *. rayObjectDot /. Vec3f.len(direction);
+        (Vec3f.mulConst(-1.0, normal), refractivity, cosine);
+      };
+    | false => (normal, 1.0 /. refractivity, -1.0 *. rayObjectDot /. Vec3f.len(direction))
+  };
+
+  let reflected = Utils.reflect(~vector=direction, ~normal);
+  let refracted = Utils.refract(~vector=direction, ~normal=outwardNormal, niOverNt);
+
+  let scattered: Ray.t = switch (refracted) {
+  | None => { origin: point, direction: reflected }
+  | Some(r) =>
+      switch (Random.float(1.0) < Utils.schlick(~cosine, ~refractivity=dielectric.refractivity)) {
+      | true => { origin: point, direction: reflected }
+      | false => { origin: point, direction: r }
+      };
+  };
+
+  Some({ scattered, attenuation: (1.0, 1.0, 1.0) });
 };
 
 let scatter = (~ray: Ray.t, ~record: record, material: t): option(scatter) =>
   switch material {
   | Lambertian(l) => scatterLambertian(~record, l)
   | Metal(m) => scatterMetal(~ray, ~record, m)
-  | _ => scatterDielectric()
+  | Dielectric(d) => scatterDielectric(~ray, ~record, d)
   };
-

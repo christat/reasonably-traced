@@ -1,5 +1,7 @@
 type vec3('t) = ('t, 't, 't);
 
+let pi = 4.0 *. atan(1.0);
+
 let floatOfIntDiv = (dividend: int, divisor: int) => float(dividend) /. float(divisor);
 
 module Vec3i = {
@@ -86,7 +88,7 @@ module Vec3f = {
     let (ax, ay, az) = a;
     let (bx, by, bz) = b;
     let x = ay*.bz -. az*.by;
-    let y = ax*.bz -. az*.bx;
+    let y = -1.0 *. (ax*.bz -. az*.bx);
     let z = ax*.by -. ay*.bx;
     (x, y, z);
   };

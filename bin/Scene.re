@@ -20,10 +20,10 @@ let rec intersection = (~ray: Ray.t, ~min_t: float=0.001, ~max_t: float=infinity
   };
 
 let rec computeScatteredColor = (~ray: Ray.t, ~depth: int=0, ~scene: t, record: Material.record): Vec3f.t =>
-switch (Material.scatter(~ray, ~record, record.material)) {
-| Some(s) => Vec3f.mul(s.attenuation, computeColor(~ray=s.scattered, ~depth=depth+1, scene))
-| None => (0.0, 0.0, 0.0)
-}
+  switch (Material.scatter(~ray, ~record, record.material)) {
+  | Some(s) => Vec3f.mul(s.attenuation, computeColor(~ray=s.scattered, ~depth=depth+1, scene))
+  | None => (0.0, 0.0, 0.0)
+  }
 and computeColor = (~ray: Ray.t, ~depth: int=0, scene: t): Vec3f.t => {
   switch (intersection(~ray, scene)) {
   | Some(record) => switch (depth >= 50) {

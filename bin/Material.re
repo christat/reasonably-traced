@@ -39,7 +39,7 @@ type scatter = {
   attenuation: Vec3f.t
 };
 
-let scatterNormal = (~record: record) => {
+let scatterNormal = (~record: record): option(scatter) => {
   let (x, y, z): Vec3f.t = record.normal;
   Some({ scattered: None, attenuation: Vec3f.mulConst(0.5, (x+.1.0, y+.1.0, z+.1.0)) })
 };

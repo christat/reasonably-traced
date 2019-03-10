@@ -14,8 +14,3 @@ let b = (rgb: t) => {
   let (_, _, b) = rgb;
   b;
 };
-
-let print = (rgb: t) => {
-  let (r, g, b) = rgb;
-  print_endline(string_of_int(r) ++ " " ++ string_of_int(g) ++ " " ++ string_of_int(b));
-}; 

@@ -5,7 +5,7 @@ let () = {
         ~chapter=int_of_string(c),
         { width: int_of_string(w), height: int_of_string(h), samples: int_of_string(s) }
       )
-  | _ => Examples.chapter12(Camera.defaultParams)
+  | _ => Examples.chapter12({ width: 1200, height: 800, samples: 10 })
   };
 
   Tracer.trace(~x=0, ~y=camera.traceParams.height-1, ~camera, ~scene, []) |> ignore;

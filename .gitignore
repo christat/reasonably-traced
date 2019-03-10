@@ -20,3 +20,4 @@ pkg/META
 .merlin
 /node_modules/
 *.ppm
+!img/*.ppm

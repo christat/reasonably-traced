@@ -27,6 +27,6 @@ let rec trace = (~x: int, ~y: int, ~camera: Camera.t, ~scene: Scene.t, buffer: B
   switch (x, y) {
   | (x, _) when x + 1 < width => trace(~x=x + 1, ~y, ~camera, ~scene, updatedBuffer)
   | (_, y) when y - 1 >= 0 => trace(~x=0, ~y=y - 1, ~camera, ~scene, updatedBuffer)  
-  | _ => Buffer.print(~width, ~height, buffer)
+  | _ => Buffer.writeToFile(~width, ~height, buffer)
   };
 };

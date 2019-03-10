@@ -14,4 +14,6 @@ However, I believe this is a great project to get acquainted with a new language
 
 **Q:** How can I play around with this?
 
-> **A:** You can select a scene from `Examples.re` and replace the invocation in `Main.re`, or use the CLI parameters as seen in `Main.re`. To build/run, execute `make build` and then run the executable `reasonably-traced` under `_build/install/default/bin`. The output goes to STDOUT, you can redirect it to a `.ppm` file to visualize.
+> **A:** You can select a scene from `Examples.re` and replace the invocation in `Main.re`, or use the CLI parameters as seen in `Main.re`. To build/run, execute `make build` and then run the executable `reasonably-traced` under `_build/install/default/bin`. The output goes by default to a file called `reasonably_traced.ppm`.
+
+![Final chapter render](https://github.com/christat/reasonably-traced/blob/master/img/reasonably_traced.jpg)

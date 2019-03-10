@@ -44,6 +44,7 @@ module Vec3f = {
     (ax *. bx, ay *. by, az *. bz);
   };
 
+
   let div = (a: t, b: t): t => {
     let (ax, ay, az) = a;
     let (bx, by, bz) = b;
@@ -105,3 +106,9 @@ module Vec3f = {
 }
 
 module Point3f = Vec3f;
+
+type basis = {
+  u: Vec3f.t,
+  v: Vec3f.t,
+  w: Vec3f.t
+}

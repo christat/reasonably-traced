@@ -1,3 +1,5 @@
+open Math;
+
 type t = {
   camera: Camera.t,
   scene: Scene.t
@@ -5,11 +7,15 @@ type t = {
 
 
 let chapter4 = (traceParams: Camera.traceParams): t => {
+  let origin = (0.0, 0.0, 0.0);
+  let direction = (0.0, 0.0, -1.0);
+  let focusDistance = Vec3f.sub(origin, direction) |> Vec3f.len;
   let camera = Camera.create(
-    ~origin=(0.0, 0.0, 0.0),
-    ~bottomLeft=(-2.0, -1.0, -1.0),
-    ~horizontal=(4.0, 0.0, 0.0),
-    ~vertical=(0.0, 2.0, 0.0),
+    ~origin,
+    ~direction,
+    ~vFov=90.0,
+    ~focusDistance,
+    ~aperture=0.0,
     ~traceParams
   );
 
@@ -23,11 +29,15 @@ let chapter4 = (traceParams: Camera.traceParams): t => {
 }
 
 let chapter5 = (traceParams: Camera.traceParams): t => {
+  let origin = (0.0, 0.0, 0.0);
+  let direction = (0.0, 0.0, -1.0);
+  let focusDistance = Vec3f.sub(origin, direction) |> Vec3f.len;
   let camera = Camera.create(
-    ~origin=(0.0, 0.0, 0.0),
-    ~bottomLeft=(-2.0, -1.0, -1.0),
-    ~horizontal=(4.0, 0.0, 0.0),
-    ~vertical=(0.0, 2.0, 0.0),
+    ~origin,
+    ~direction,
+    ~vFov=90.0,
+    ~focusDistance,
+    ~aperture=0.0,
     ~traceParams
   );
 
@@ -47,11 +57,15 @@ let chapter5 = (traceParams: Camera.traceParams): t => {
 }
 
 let chapter8 = (traceParams: Camera.traceParams): t => {
+  let origin = (0.0, 0.0, 0.0);
+  let direction = (0.0, 0.0, -1.0);
+  let focusDistance = Vec3f.sub(origin, direction) |> Vec3f.len;
   let camera = Camera.create(
-    ~origin=(0.0, 0.0, 0.0),
-    ~bottomLeft=(-2.0, -1.0, -1.0),
-    ~horizontal=(4.0, 0.0, 0.0),
-    ~vertical=(0.0, 2.0, 0.0),
+    ~origin,
+    ~direction,
+    ~vFov=90.0,
+    ~focusDistance,
+    ~aperture=0.0,
     ~traceParams
   );
 
@@ -91,11 +105,15 @@ let chapter8 = (traceParams: Camera.traceParams): t => {
 }
 
 let chapter9 = (traceParams: Camera.traceParams): t => {
+  let origin = (0.0, 0.0, 0.0);
+  let direction = (0.0, 0.0, -1.0);
+  let focusDistance = Vec3f.sub(origin, direction) |> Vec3f.len;
   let camera = Camera.create(
-    ~origin=(0.0, 0.0, 0.0),
-    ~bottomLeft=(-2.0, -1.0, -1.0),
-    ~horizontal=(4.0, 0.0, 0.0),
-    ~vertical=(0.0, 2.0, 0.0),
+    ~origin,
+    ~direction,
+    ~vFov=90.0,
+    ~focusDistance,
+    ~aperture=0.0,
     ~traceParams
   );
 
@@ -142,10 +160,70 @@ let chapter9 = (traceParams: Camera.traceParams): t => {
 }
 
 let chapter10 = (traceParams: Camera.traceParams): t => {
-  let camera = Camera.createDynamic(
-    ~origin=(-2.0, 2.0, 1.0),
-    ~direction=(0.0, 0.0, -1.0),
+  let origin = (-2.0, 2.0, 1.0);
+  let direction = (0.0, 0.0, -1.0);
+  let focusDistance = Vec3f.sub(origin, direction) |> Vec3f.len;
+  let camera = Camera.create(
+    ~origin,
+    ~direction,
     ~vFov=20.0,
+    ~focusDistance,
+    ~aperture=0.0,
+    ~traceParams
+  );
+
+  let sphere: Sphere.t = {
+    position: (0.0, 0.0, -1.0),
+    radius: 0.5,
+    material: Lambertian({ albedo: (0.1, 0.2, 0.5) })
+  };
+
+  let backgroundSphere: Sphere.t = {
+    position: (0.0, -100.5, -1.0),
+    radius: 100.0,
+    material: Lambertian({ albedo: (0.8, 0.8, 0.0) })
+  };
+
+  let rightSphere: Sphere.t = {
+    position: (1.0, 0.0, -1.0),
+    radius: 0.5,
+    material: Metal({ albedo: (0.8, 0.6, 0.2), fuzz: 1.0 })
+  };
+
+  let leftSphere: Sphere.t = {
+    position: (-1.0, 0.0, -1.0),
+    radius: 0.5,
+    material: Dielectric({ refractivity: 1.5 })
+  };
+
+  let leftBubbleSphere: Sphere.t = {
+    position: (-1.0, 0.0, -1.0),
+    radius: -0.45,
+    material: Dielectric({ refractivity: 1.5 })
+  };
+
+  {
+    camera,
+    scene: [
+      Sphere(sphere),
+      Sphere(backgroundSphere),
+      Sphere(rightSphere),
+      Sphere(leftSphere),
+      Sphere(leftBubbleSphere)
+    ]
+  };
+}
+
+let chapter11 = (traceParams: Camera.traceParams): t => {
+  let origin = (3.0, 3.0, 2.0);
+  let direction = (0.0, 0.0, -1.0);
+  let focusDistance = Vec3f.sub(origin, direction) |> Vec3f.len;
+  let camera = Camera.create(
+    ~origin,
+    ~direction,
+    ~vFov=20.0,
+    ~focusDistance,
+    ~aperture=2.0,
     ~traceParams
   );
 

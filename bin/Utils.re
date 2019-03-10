@@ -9,6 +9,15 @@ let rec randomPointInUnitSphere = (): Point3f.t => {
   };
 };
 
+let rec randomPointInUnitDisk = (): Point3f.t => {
+  let r = (Random.float(1.0), Random.float(1.0), 0.0);
+  let point = Vec3f.sub(Vec3f.mulConst(2.0, r), (1.0, 1.0, 0.0));
+  switch (Vec3f.dot(point, point) >= 1.0) {
+  | true => randomPointInUnitDisk()
+  | false => point
+  };
+};
+
 let reflect = (~vector: Vec3f.t, ~normal: Vec3f.t): Vec3f.t => {
   let k = 2.0 *. Vec3f.dot(vector, normal);
   Vec3f.mulConst(k, normal) |> Vec3f.sub(vector);

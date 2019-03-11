@@ -1,5 +1,5 @@
-# ReasonablyTraced
-Another go at [Ray Tracing in One Weekend](), this time using Reasonml.
+# Reasonably traced
+Peter Shirley's [Ray Tracing in One Weekend](http://in1weekend.blogspot.com/2016/01/ray-tracing-in-one-weekend.html) written in ReasonML.
 
 ## FAQ
 
